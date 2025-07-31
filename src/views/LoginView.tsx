@@ -1,13 +1,11 @@
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 export default function LoginView() {
   return (
     <>
-        <div>LoginView</div>
-
-        <nav>
-            <Link to="/auth/register">Registrarse</Link>
-        </nav>
+      <nav>
+        <Link to="/auth/register">Registrarse</Link>
+      </nav>
     </>
-  )
+  );
 }
