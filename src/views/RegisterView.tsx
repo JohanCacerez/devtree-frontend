@@ -1,14 +1,29 @@
 import { Link } from "react-router-dom";
-import { useForm} from 'react-hook-form'
+import { useForm } from "react-hook-form";
 import ErrorsMessage from "../components/ErrorsMessage";
 
 export default function RegisterView() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const initialValues = {
+    name: "",
+    email: "",
+    handle: "",
+    password: "",
+    password_confirmation: "",
+  };
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ defaultValues: initialValues });
 
   // Function to handle form submission
   const handleRegister = () => {
     console.log("desde handleRegister");
-  }
+  };
+
+  const password = watch('password')
 
   return (
     <>
@@ -28,7 +43,7 @@ export default function RegisterView() {
             placeholder="Tu Nombre"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("name", {
-              required: "El nombre es obligatorio"
+              required: "El nombre es obligatorio",
             })}
           />
           {errors.name && <ErrorsMessage>{errors.name.message}</ErrorsMessage>}
@@ -43,9 +58,16 @@ export default function RegisterView() {
             placeholder="Email de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("email", {
-              required: "El email es obligatorio"
+              required: "El email es obligatorio",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "E-mail no válido",
+              },
             })}
           />
+          {errors.email && (
+            <ErrorsMessage>{errors.email.message}</ErrorsMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="handle" className="text-2xl text-slate-500">
@@ -57,9 +79,12 @@ export default function RegisterView() {
             placeholder="Nombre de usuario: sin espacios"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("handle", {
-              required: "El handle es obligatorio"
+              required: "El handle es obligatorio",
             })}
           />
+          {errors.handle && (
+            <ErrorsMessage>{errors.handle.message}</ErrorsMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="password" className="text-2xl text-slate-500">
@@ -71,9 +96,13 @@ export default function RegisterView() {
             placeholder="Password de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
-              required: "El password es obligatorio"
+              required: "El password es obligatorio",
+              minLength: { value: 8, message: "El password debe tener al menos 8 caracteres" }
             })}
           />
+          {errors.password && (
+            <ErrorsMessage>{errors.password.message}</ErrorsMessage>
+          )}
         </div>
 
         <div className="grid grid-cols-1 space-y-3">
@@ -89,9 +118,15 @@ export default function RegisterView() {
             placeholder="Repetir Password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password_confirmation", {
-              required: "La confirmación del password es obligatoria"
+              required: "La confirmación del password es obligatoria",
+              validate: (value) => value === password || "Los passwords no coinciden"
             })}
           />
+          {errors.password_confirmation && (
+            <ErrorsMessage>
+              {errors.password_confirmation.message}
+            </ErrorsMessage>
+          )}
         </div>
 
         <input
