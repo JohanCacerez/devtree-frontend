@@ -16,6 +16,7 @@ export default function RegisterView() {
 
   const {
     register,
+    reset,
     handleSubmit,
     watch,
     formState: { errors },
@@ -24,8 +25,9 @@ export default function RegisterView() {
   // Function to handle form submission
   const handleRegister = async (formData : RegisterForm) => {
     try {
-      const {data} = await axios.post('http://localhost:3000/auth/register', formData);
+      const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData);
       console.log(data)
+      reset(); // Reset form after successful registration
     } catch (error) {
       if(isAxiosError(error) && error.response) {
         console.log(error.response?.data.error);
