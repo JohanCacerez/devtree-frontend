@@ -1,8 +1,22 @@
 import { Link, Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
+import {useQuery} from '@tanstack/react-query'
 import NavigationTabs from "../components/NavigationTabs";
+import { getUSer } from "../api/DevTreeAPI";
 
 export default function AppLayout() {
+
+    const { data, isLoading, error, isError} = useQuery({
+        queryFn: getUSer,
+        queryKey: ['user'],
+        retry: 2,
+        refetchOnWindowFocus: false,
+    })
+
+    console.log(data)
+    console.log(isLoading)
+    console.log(isError)
+    console.log(error?.message)
 
 
     return (
